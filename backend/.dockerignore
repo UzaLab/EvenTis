@@ -1,0 +1,24 @@
+# Fichiers de log et de dépendances locales
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Fichiers de build
+dist
+build
+
+# Fichiers de configuration spécifiques à l'IDE
+.vscode
+.idea
+
+# Fichiers Git
+.git
+.gitignore
+
+# Fichier Docker lui-même et docker-compose
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Fichiers d'environnement locaux (ne pas inclure dans l'image)
+.env

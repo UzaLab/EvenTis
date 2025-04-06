@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Service Base de Données PostgreSQL
+  db:
+    image: postgres:16 # Utilisation de Postgres 16 comme décidé
+    container_name: eventis_db # Nom du conteneur DB
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: eventis_app_user # Nouveau nom d'utilisateur spécifique à l'app
+      POSTGRES_PASSWORD: STkKTsotms3iq6fe # Utilisation du même mot de passe que dans .env
+      POSTGRES_DB: eventis_app_db # Nouveau nom de base de données spécifique
+    ports:
+      # Expose le port 5432 du conteneur sur le port 5432 de l'hôte (Windows)
+      # Utile si vous voulez vous connecter avec pgAdmin depuis Windows
+      - "5432:5432"
+    volumes:
+      - eventis_db_data:/var/lib/postgresql/data # Persistance des données
+
+  # Service Backend NestJS
+  backend:
+    container_name: eventis_backend # Nom du conteneur backend
+    build:
+      context: ./backend # Chemin vers le dossier contenant le Dockerfile
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - db # S'assure que le service 'db' démarre avant le backend
+    ports:
+      # Expose le port 3001 du conteneur sur le port 3001 de l'hôte (Windows)
+      - "3001:3001"
+    environment:
+      # Variables d'environnement pour l'application NestJS DANS le conteneur
+      DB_HOST: db # <--- IMPORTANT: Nom du service DB défini ci-dessus
+      DB_PORT: 5432 # Port INTERNE de Postgres dans Docker
+      DB_USERNAME: eventis_app_user # Doit correspondre à POSTGRES_USER
+      DB_PASSWORD: STkKTsotms3iq6fe # Doit correspondre à POSTGRES_PASSWORD
+      DB_DATABASE: eventis_app_db # Doit correspondre à POSTGRES_DB
+      DB_SYNCHRONIZE: true # Activer pour créer les tables au début
+      APP_PORT: 3001 # Port sur lequel NestJS écoute DANS le conteneur
+      JWT_SECRET: e9f8cd010816078a36bccc8528ad4a2ee8b06da0181432482d3c368fc3c099cbef1b0b13389ede10fc2df68b1ec382795931929f0eb04e3e10348d91de777704 # Secret JWT du fichier .env
+      JWT_EXPIRATION: 3600s
+
+volumes:
+  # Définit le volume nommé pour persister les données
+  eventis_db_data: # Nouveau nom de volume
+    driver: local
