@@ -48,15 +48,28 @@ export class AuthService {
   }
 
   async validateUser(email: string, pass: string): Promise<Omit<User, 'password_hash'> | null> {
+    console.log(`--- validateUser: Tentative de validation pour email: ${email} ---`);
+
     const user = await this.usersService.findOneByEmail(email);
 
+    console.log(`--- validateUser: Utilisateur trouvé par email:`, user ? `ID ${user.id}` : 'Non trouvé');
+    if (user) {
+      console.log(`--- validateUser: Hash trouvé en BDD? :`, user.password_hash ? 'Oui (caché)' : 'NON !');
+    }
+
     if (user && user.password_hash) {
+         console.log(`--- validateUser: Comparaison bcrypt en cours... ---`);
          const isMatch = await bcrypt.compare(pass, user.password_hash);
+         console.log(`--- validateUser: Résultat bcrypt.compare: ${isMatch} ---`);
+
          if(isMatch) {
             const { password_hash, ...result } = user;
+            console.log(`--- validateUser: Succès, retourne user ID ${result.id} ---`);
             return result;
          }
     }
+
+    console.log(`--- validateUser: Échec (User non trouvé ou mdp incorrect) ---`);
     return null;
   }
 

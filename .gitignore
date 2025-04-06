@@ -1,7 +1,7 @@
-Logs
+# Logs
 logs
-.log
-npm-debug.log
+*.log
+npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
@@ -11,51 +11,51 @@ pids
 *.seed
 *.pid.lock
 
-Fichiers système
+# Fichiers système
 .DS_Store
 Thumbs.db
 
-Dossiers de dépendances
+# Dossiers de dépendances (ignorer à la racine et dans les sous-projets)
 node_modules/
-
-Ignorer node_modules dans les sous-projets aussi
 backend/node_modules/
 frontend/node_modules/
 
-Fichiers d'environnement (NE PAS COMMIT LES SECRETS !)
+# Fichiers d'environnement (NE PAS COMMIT LES SECRETS !)
 .env
 .env.*
 
-Autoriser les fichiers .env.example
+# Autoriser les fichiers .env.example si vous en créez
 !.env.example
 
-Spécifier les chemins exacts des .env à ignorer
+# Spécifier les chemins exacts des .env à ignorer
 /backend/.env
 /frontend/.env.local
 
-Artefacts de build
+# Artefacts de build
 dist/
 build/
 coverage/
 
-Artefacts Next.js
+# Artefacts Next.js
 /frontend/.next/
 /frontend/out/
 
-Artefacts NestJS
+# Artefacts NestJS
 /backend/dist/
 
-Fichiers IDE
+# Fichiers IDE
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 *.sublime-workspace
+.idea/
 
-Fichiers OS divers
+# Fichiers OS divers
 .swp
 ._
 
-Fichiers de test Next.js/Jest
+# Fichiers de test Next.js/Jest
 *.tsbuildinfo
+next-env.d.ts

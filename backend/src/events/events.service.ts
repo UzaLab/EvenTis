@@ -91,17 +91,23 @@ export class EventsService {
 
   // Méthode spécifique pour ajouter un type de billet à un événement existant
   async addTicketTypeToEvent(eventId: number, createTicketTypeDto: CreateTicketTypeDto): Promise<TicketType> {
-    const event = await this.findOneEvent(eventId); // Vérifie si l'événement existe
+    // Vérifie si l'événement existe (findOneEvent le fait déjà)
+    await this.findOneEvent(eventId);
 
+    // Création EXPLICITE de l'objet de données SANS spread operator
     const newTicketTypeData: Partial<TicketType> = {
-        event_id: eventId,
+        event_id: eventId, // <- Clé étrangère directe
         name: createTicketTypeDto.name,
         description: createTicketTypeDto.description,
         price: createTicketTypeDto.price,
         quantity_available: createTicketTypeDto.quantity_available,
-        sale_start_date: createTicketTypeDto.sale_start_date ? new Date(createTicketTypeDto.sale_start_date) : undefined,
-        sale_end_date: createTicketTypeDto.sale_end_date ? new Date(createTicketTypeDto.sale_end_date) : undefined,
+        // Conversion des dates en utilisant undefined si absent
+        sale_start_date: createTicketTypeDto.sale_start_date ? new Date(createTicketTypeDto.sale_start_date) : undefined, // Utilise undefined
+        sale_end_date: createTicketTypeDto.sale_end_date ? new Date(createTicketTypeDto.sale_end_date) : undefined,     // Utilise undefined
+        // Les autres champs auront leurs valeurs par défaut ou seront gérés par TypeORM/DB.
     };
+
+    // Crée l'instance avec les données explicites
     const newTicketType = this.ticketTypeRepository.create(newTicketTypeData);
 
     try {
