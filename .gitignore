@@ -17,7 +17,10 @@ Thumbs.db
 
 Dossiers de dépendances
 node_modules/
-*/node_modules/
+
+Ignorer node_modules dans les sous-projets aussi
+backend/node_modules/
+frontend/node_modules/
 
 Fichiers d'environnement (NE PAS COMMIT LES SECRETS !)
 .env
@@ -34,8 +37,13 @@ Artefacts de build
 dist/
 build/
 coverage/
-.next/
-out/
+
+Artefacts Next.js
+/frontend/.next/
+/frontend/out/
+
+Artefacts NestJS
+/backend/dist/
 
 Fichiers IDE
 .vscode/*
@@ -51,4 +59,3 @@ Fichiers OS divers
 
 Fichiers de test Next.js/Jest
 *.tsbuildinfo
-next-env.d.ts
